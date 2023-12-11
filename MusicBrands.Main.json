@@ -1,0 +1,102 @@
+[{
+  "_id": {
+    "$oid": "657667072c563c97e5e7b18f"
+  },
+  "brand": "Yamaha",
+  "history": "Yamaha Corporation - японская транснациональная корпорация и конгломерат с очень широким спектром продукции и услуг. Она является одной из составляющих Nikkei 225 и крупнейшим в мире производителем фортепиано.",
+  "logo": "Логотип Yamaha",
+  "official_website": "https://www.yamaha.com/",
+  "stores": [
+    {
+      "name": "Музыкальный магазин Самара",
+      "url": "https://www.musicstoresamara.ru",
+      "order_info": "https://www.musicstoresamara.ru/order_and_delivery",
+      "location": "ул. Музыкальная, 1, Самара"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "657667072c563c97e5e7b190"
+  },
+  "brand": "Fender",
+  "history": "Fender Musical Instruments Corporation - американская компания-производитель музыкальных инструментов, известная своими электрогитарами и бас-гитарами.",
+  "logo": "Логотип Fender",
+  "official_website": "https://www.fender.com/",
+  "stores": [
+    {
+      "name": "Музыкальный мир",
+      "url": "https://www.musicworld.ru",
+      "order_info": "https://www.musicworld.ru/order_and_delivery",
+      "location": "ул. Гитарная, 2, Самара"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6576673a2c563c97e5e7b192"
+  },
+  "brand": "Gibson",
+  "history": "Gibson Brands, Inc. - американская компания, производитель гитар, других музыкальных инструментов и профессиональной электроники.",
+  "logo": "Логотип Gibson",
+  "official_website": "https://www.gibson.com/",
+  "stores": [
+    {
+      "name": "Музыкальный магазин Самара",
+      "url": "https://www.musicstoresamara.ru",
+      "order_info": "https://www.musicstoresamara.ru/order_and_delivery",
+      "location": "ул. Музыкальная, 1, Самара"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "657667a12c563c97e5e7b194"
+  },
+  "brand": "Ibanez",
+  "history": "Ibanez - японский бренд гитар, известный своими электрогитарами и бас-гитарами. Ibanez был основан компанией Hoshino Gakki, начавшей производство гитар в начале 1900-х годов.",
+  "logo": "Логотип Ibanez",
+  "official_website": "https://www.ibanez.com/",
+  "stores": [
+    {
+      "name": "Музыкальный магазин Самара",
+      "url": "https://www.musicstoresamara.ru",
+      "order_info": "https://www.musicstoresamara.ru/order_and_delivery",
+      "location": "ул. Музыкальная, 1, Самара"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "657667a12c563c97e5e7b195"
+  },
+  "brand": "Roland",
+  "history": "Roland Corporation - японская компания, производитель электронных музыкальных инструментов, электронного оборудования и программного обеспечения. Она была основана в 1972 году Икаутаро Какэхаши.",
+  "logo": "Логотип Roland",
+  "official_website": "https://www.roland.com/",
+  "stores": [
+    {
+      "name": "Музыкальный мир",
+      "url": "https://www.musicworld.ru",
+      "order_info": "https://www.musicworld.ru/order_and_delivery",
+      "location": "ул. Гитарная, 2, Самара"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "657667a12c563c97e5e7b196"
+  },
+  "brand": "Korg",
+  "history": "Korg Inc. - японская корпорация, производитель электронных музыкальных инструментов и записывающего оборудования. Она была основана в 1962 году Цутому Като и Тадаси Осанаи.",
+  "logo": "Логотип Korg",
+  "official_website": "https://www.korg.com/",
+  "stores": [
+    {
+      "name": "Музыкальный магазин Самара",
+      "url": "https://www.musicstoresamara.ru",
+      "order_info": "https://www.musicstoresamara.ru/order_and_delivery",
+      "location": "ул. Музыкальная, 1, Самара"
+    }
+  ]
+}]
