@@ -5,6 +5,11 @@
   "theaterName": "Театр имени М. Горького",
   "website": "http://www.samart.ru/",
   "location": "Самара, ул. Куйбышева, 111",
+  "theaterImages": [
+    "https://avatars.mds.yandex.net/i?id=b17e400e44cad4425379587e31d76fa499643a23-10677603-images-thumbs&n=13",
+    "https://komunavolge.ru/assets/uploads/stories/2022/April/direktordramteatratorchinskiy/ERS_7348.jpg",
+    "https://avatars.mds.yandex.net/i?id=2e7d63d67d22044fc263a07f8510607ff9867901-10805535-images-thumbs&n=13"
+  ],
   "shows": [
     {
       "title": "Ревизор",
@@ -55,6 +60,11 @@
   "theaterName": "Самарский академический театр оперы и балета",
   "website": "http://www.samopera.ru/",
   "location": "Самара, ул. Куйбышева, 85",
+  "theaterImages": [
+    "https://samaragovorit.ru/upload/000/u2/0/d/samarskii-teatr-opery-i-baleta-smenil-nazvanie-i-logotip-photo-big.webp",
+    "http://s5.afisha.ru/mediastorage/f4/04/c98a2e6e3dd448d3b780089104f4.jpg",
+    "https://tatar-duslyk.ru/wp-content/uploads/2022/03/IMG_0110-1.jpg"
+  ],
   "shows": [
     {
       "title": "Щелкунчик",

@@ -1,5 +1,7 @@
 pyTelegramBotAPI
-spacy
 pymongo
-fuzzysearch
-transliterate
+telegram
+datetime
+geopy
+Nominatim
+sklearn 
