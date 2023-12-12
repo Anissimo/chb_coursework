@@ -1,2 +1,2 @@
 MONGODB_SERVER = 'mongodb://localhost:27017'
-TOKEN = ''
+TOKEN = '6844147281:AAF1cSp1Ca7SJvm8A8QpfV6HjWmw-svNn4E'
