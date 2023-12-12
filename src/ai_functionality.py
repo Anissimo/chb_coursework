@@ -2,7 +2,7 @@
 from connections import get_collection
 from connections import nlp
 from fuzzysearch import find_near_matches
-from transliterate import translit, get_available_language_codes
+from transliterate import translit
 
 def find_best_match(input_string):
     doc = nlp(input_string)
@@ -20,7 +20,7 @@ def find_best_match(input_string):
                 except:
                     token_translit = str(token)
 
-                found_matches = find_near_matches(token_translit, str(value), max_l_dist=1)
+                found_matches = find_near_matches(token_translit, str(value), max_l_dist=5)
                 if found_matches:
                     universal_break = True
                     matches.append((found_matches[0].dist, item))
@@ -31,3 +31,4 @@ def find_best_match(input_string):
     matches.sort(key=lambda x: x[0])
     
     return matches
+

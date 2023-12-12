@@ -22,17 +22,17 @@ def get_collection():
 
     try:
         db = client['MusicBrands']
-        collection = db['Main']
+        collection = db['theatre']
         # print(collection)
         return collection
     except Exception as e:
         return None
 
-def get_stores_info(item_id):
+def get_shows_info(item_id):
     collection = get_collection()
     item = collection.find_one({"_id": item_id})
-    if item and 'stores' in item:
-        return item['stores']
+    if item and 'shows' in item:
+        return item['shows']
     else:
         return None
     
@@ -41,12 +41,8 @@ def get_more_info(item_id):
     collection = get_collection()
     item = collection.find_one({"_id": ObjectId(item_id)})
     if item:
-        # Вернуть всю информацию о бренде
+        # Вернуть всю информацию о театре
         return item
     else:
         return None
-
-
-
-
-
+    

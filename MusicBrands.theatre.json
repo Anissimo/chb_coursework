@@ -1,0 +1,100 @@
+[{
+  "_id": {
+    "$oid": "65780c052c563c97e5e7b1a1"
+  },
+  "theaterName": "Театр имени М. Горького",
+  "website": "http://www.samart.ru/",
+  "location": "Самара, ул. Куйбышева, 111",
+  "shows": [
+    {
+      "title": "Ревизор",
+      "shortDescription": "Комедия в 5 действиях",
+      "images": [
+        "image1.jpg",
+        "image2.jpg"
+      ],
+      "upcomingShows": [
+        {
+          "date": "2023-12-15T19:00:00",
+          "ticketPrice": "от 500 до 2000 рублей",
+          "bookingLink": "http://www.samart.ru/booking/revizor"
+        },
+        {
+          "date": "2023-12-16T19:00:00",
+          "ticketPrice": "от 500 до 2000 рублей",
+          "bookingLink": "http://www.samart.ru/booking/revizor"
+        }
+      ]
+    },
+    {
+      "title": "Гамлет",
+      "shortDescription": "Трагедия в 5 действиях",
+      "images": [
+        "image3.jpg",
+        "image4.jpg"
+      ],
+      "upcomingShows": [
+        {
+          "date": "2023-12-20T19:00:00",
+          "ticketPrice": "от 500 до 2000 рублей",
+          "bookingLink": "http://www.samart.ru/booking/hamlet"
+        },
+        {
+          "date": "2023-12-21T19:00:00",
+          "ticketPrice": "от 500 до 2000 рублей",
+          "bookingLink": "http://www.samart.ru/booking/hamlet"
+        }
+      ]
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "65780c052c563c97e5e7b1a2"
+  },
+  "theaterName": "Самарский академический театр оперы и балета",
+  "website": "http://www.samopera.ru/",
+  "location": "Самара, ул. Куйбышева, 85",
+  "shows": [
+    {
+      "title": "Щелкунчик",
+      "shortDescription": "Балет в 2 действиях",
+      "images": [
+        "image5.jpg",
+        "image6.jpg"
+      ],
+      "upcomingShows": [
+        {
+          "date": "2023-12-25T19:00:00",
+          "ticketPrice": "от 1000 до 3000 рублей",
+          "bookingLink": "http://www.samopera.ru/booking/nutcracker"
+        },
+        {
+          "date": "2023-12-26T19:00:00",
+          "ticketPrice": "от 1000 до 3000 рублей",
+          "bookingLink": "http://www.samopera.ru/booking/nutcracker"
+        }
+      ]
+    },
+    {
+      "title": "Травиата",
+      "shortDescription": "Опера в 3 действиях",
+      "images": [
+        "image7.jpg",
+        "image8.jpg"
+      ],
+      "upcomingShows": [
+        {
+          "date": "2023-12-30T19:00:00",
+          "ticketPrice": "от 1000 до 3000 рублей",
+          "bookingLink": "http://www.samopera.ru/booking/traviata"
+        },
+        {
+          "date": "2024-01-01T19:00:00",
+          "ticketPrice": "от 1000 до 3000 рублей",
+          "bookingLink": "http://www.samopera.ru/booking/traviata"
+        }
+      ]
+    }
+  ]
+}]
