@@ -36,17 +36,52 @@ def callback_full(call):
     bot.send_message(call.message.chat.id, 'Пожалуйста, введи театр о котором ты хотел бы узнать')
     bot.register_next_step_handler(call.message, process_theatre_id)
 
-def process_theatre_id(message):
-    commands.full(bot, message, message.text)
-
 @bot.callback_query_handler(func=lambda call: call.data == 'show_info')
 def callback_show_info(call):
     bot.send_message(call.message.chat.id, 'Пожалуйста, введите название спектакля.')
     bot.register_next_step_handler(call.message, process_show_title)
 
+@bot.callback_query_handler(func=lambda call: call.data.startswith('show_info:'))
+def callback_show_info_specific(call):
+    _, id, show_title = call.data.split(':')
+    commands.show_info(bot, call.message, id=id, show_title=show_title)
+
+
+@bot.callback_query_handler(func=lambda call: call.data == 'nearest_show_all')
+def callback_nearest_show_all(call):
+    commands.nearest_show(bot, call.message)
+
+@bot.callback_query_handler(func=lambda call: call.data == 'nearest_show_id')
+def callback_nearest_show_id(call):
+    bot.send_message(call.message.chat.id, 'Пожалуйста, введи название театра.')
+    bot.register_next_step_handler(call.message, process_theatre_name_nearest_show)
+
+@bot.callback_query_handler(func=lambda call: call.data == 'nearest_show_title')
+def callback_nearest_show_title(call):
+    bot.send_message(call.message.chat.id, 'Пожалуйста, введи название спектакля.')
+    bot.register_next_step_handler(call.message, process_show_title_nearest_show)
+
+def process_theatre_name_nearest_show(message):
+    commands.nearest_show(bot, message, theater_name=message.text)
+
+def process_show_title_nearest_show(message):
+    commands.nearest_show(bot, message, show_title=message.text)
+
+
+
+
+
+
+
+
 def process_show_title(message):
     print(f"Название спектакля: {message.text}")
     commands.show_info(bot, message, show_title=message.text)
+
+
+def process_theatre_id(message):
+    commands.full(bot, message, message.text)
+
 
 if __name__ == '__main__':
     try:

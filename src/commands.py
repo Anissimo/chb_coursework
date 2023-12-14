@@ -3,6 +3,14 @@ import database
 from datetime import datetime
 from geopy.geocoders import Nominatim
 from telebot import types
+import requests
+
+def is_valid_url(url):
+    try:
+        response = requests.get(url)
+        return response.status_code == 200
+    except:
+        return False
 
 def start(bot, message):
     "Отправляет приветственное сообщение и краткое описание функционала бота."
@@ -51,25 +59,27 @@ def show_info(bot, message, id=None, show_title=None, send_images=False):
                     else:
                         show_date = upcoming_shows[0]["date"].strftime("%d.%m.%Y %H:%M")
                     markup.add(types.InlineKeyboardButton(text="Бронировать билеты", url=upcoming_shows[0]["bookingLink"]))
-                    bot.send_photo(chat_id=message.chat.id, photo=show["images"][0], caption=f'Название спектакля: {show["title"]}\nБлижайший спектакль: {show_date}\nЦена билета: {upcoming_shows[0]["ticketPrice"]}', reply_markup=markup)
+                    for image in show["images"]:
+                        if is_valid_url(image):
+                            bot.send_photo(chat_id=message.chat.id, photo=image, caption=f'Название спектакля: {show["title"]}\nБлижайший спектакль: {show_date}\nЦена билета: {upcoming_shows[0]["ticketPrice"]}', reply_markup=markup)
+                            break
                 return
     bot.send_message(message.chat.id, 'Спектакль с таким названием не найден.')
 
 
-
-def nearest_show(bot, message, id=None, title=None):
+def nearest_show(bot, message, theater_name=None, show_title=None):
     print("Вход в функцию nearest_show")
-    if id is not None:
-        theaters = [database.get_theater(id)]
-    elif title is not None:
+    if theater_name is not None:
+        theaters = [database.get_theater_by_name(theater_name)]
+    elif show_title is not None:
         theaters = database.get_theaters()
     else:
-        return
+        theaters = database.get_theaters()  # Возвращаем спектакли всех театров, если не указаны theater_name и show_title
     for theater in theaters:
         if theater is not None:
             print(f"Обработка театра {theater['theaterName']}")
             for show in theater["shows"]:
-                if title is not None and show["title"] != title:
+                if show_title is not None and show["title"] != show_title:
                     continue
                 upcoming_shows = [s for s in show["upcomingShows"] if datetime.fromisoformat(s["date"]) > datetime.now()]
                 if upcoming_shows:
@@ -77,7 +87,8 @@ def nearest_show(bot, message, id=None, title=None):
                     show["upcomingShows"][0]["date"] = upcoming_shows[0]["date"]
                     show_info(bot, message, str(theater["_id"]), show["title"], send_images=False)
         else:
-            bot.send_message(message.chat.id, 'Театр с таким ID не найден.')
+            bot.send_message(message.chat.id, 'Театр с таким названием не найден.')
+
 
 
 def theatre_location(bot, message, id, send_message=True):
