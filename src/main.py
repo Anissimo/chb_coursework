@@ -3,7 +3,10 @@ import telebot
 import config
 import commands
 from telebot import types
+from searcher import Searcher
 
+# searcher = Searcher()
+searcher = None
 bot = telebot.TeleBot(config.TOKEN)
 
 @bot.message_handler(commands=['start'])
@@ -69,6 +72,11 @@ def process_show_title_nearest_show(message):
 
 
 
+def process_theatre_name_full(message):
+    commands.full(bot, message, theater_name=message.text)
+
+def process_show_title_show_info(message):
+    commands.show_info(bot, message, show_title=message.text)
 
 
 
@@ -81,6 +89,41 @@ def process_show_title(message):
 
 def process_theatre_id(message):
     commands.full(bot, message, message.text)
+
+
+
+
+@bot.callback_query_handler(func=lambda call: call.data == 'search')
+def callback_search(call):
+    global searcher
+    searcher = Searcher()
+    bot.send_message(call.message.chat.id, 'Введите ваше сообщение.')
+    bot.register_next_step_handler(call.message, process_search_query)
+
+def process_search_query(message):
+    global searcher
+    action = searcher.predict_action(message.text)
+    searcher = None
+    if action == 'start':
+        commands.start(bot, message)
+    elif action == 'help':
+        help(message)
+    elif action == 'short':
+        commands.short(bot, message)
+    elif action == 'full':
+        bot.send_message(message.chat.id, 'Пожалуйста, введите название театра.')
+        bot.register_next_step_handler(message, process_theatre_name_full)
+    elif action == 'show_info':
+        bot.send_message(message.chat.id, 'Пожалуйста, введите название спектакля.')
+        bot.register_next_step_handler(message, process_show_title_show_info)
+    elif action == 'nearest_show_all':
+        commands.nearest_show(bot, message)
+    elif action == 'nearest_show_id':
+        bot.send_message(message.chat.id, 'Пожалуйста, введите название театра.')
+        bot.register_next_step_handler(message, process_theatre_name_nearest_show)
+    elif action == 'nearest_show_title':
+        bot.send_message(message.chat.id, 'Пожалуйста, введите название спектакля.')
+        bot.register_next_step_handler(message, process_show_title_nearest_show)
 
 
 if __name__ == '__main__':
