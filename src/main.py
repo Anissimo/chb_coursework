@@ -2,7 +2,6 @@
 import telebot
 import config
 import commands
-import searcher
 from telebot import types
 
 bot = telebot.TeleBot(config.TOKEN)
@@ -24,58 +23,6 @@ def help(message):
     markup.add(types.InlineKeyboardButton(text="Поиск", callback_data='search'))
     bot.send_message(message.chat.id, "Вот список всех доступных команд:", reply_markup=markup)
 
-
-@bot.message_handler(commands=['short'])
-def short(message):
-    commands.short(bot, message)
-
-
-@bot.message_handler(regexp=r'^/full/\w+$')
-def full(message):
-    print("Обработка команды /full")
-    id = message.text.split('/')[2]  # Извлекаем id из команды
-    commands.full(bot, message, id)
-
-
-@bot.message_handler(regexp=r'^/full/\w+/\w+$')
-def show_info(message):
-    print("Обработка команды /full/show")
-    id, show_title = message.text.split('/')[2:]  # Извлекаем id и название шоу из команды
-    commands.show_info(bot, message, id, show_title, send_images=False)
-
-# @bot.callback_query_handler(func=lambda call: call.data.startswith('show_info'))
-# def callback_query(call):
-#     _, id, show_title = call.data.split(':')
-#     commands.show_info(bot, call.message, id, show_title, send_images=True)
-
-
-@bot.message_handler(regexp=r'^/nearest_show/all$')
-def nearest_show_all(message):
-    print("Обработка команды /nearest_show/all")
-    commands.nearest_show(bot, message)
-
-@bot.message_handler(regexp=r'^/nearest_show/\w+$')
-def nearest_show_id(message):
-    print("Обработка команды /nearest_show/id")
-    id = message.text.split('/')[2]  # Извлекаем id из команды
-    commands.nearest_show(bot, message, id)
-
-@bot.message_handler(regexp=r'^/nearest_show/\w+$')
-def nearest_show_title(message):
-    print("Обработка команды /nearest_show/title")
-    title = message.text.split('/')[2]  # Извлекаем название из команды
-    commands.nearest_show(bot, message, title=title)
-
-@bot.message_handler(regexp=r'^/\w+/location$')
-def theatre_location(message):
-    print("Обработка команды /id/location")
-    id = message.text.split('/')[1]  # Извлекаем id из команды
-    commands.theatre_location(bot, message, id)
-
-# @bot.message_handler(regexp=r'^/feedback$')
-# def feedback(message):
-#     commands.feedback(bot, message)
-
 @bot.callback_query_handler(func=lambda call: call.data == 'start')
 def callback_start(call):
     commands.start(bot, call.message)
@@ -94,27 +41,12 @@ def process_theatre_id(message):
 
 @bot.callback_query_handler(func=lambda call: call.data == 'show_info')
 def callback_show_info(call):
-    print("Вход в функцию callback_show_info")
     bot.send_message(call.message.chat.id, 'Пожалуйста, введите название спектакля.')
     bot.register_next_step_handler(call.message, process_show_title)
 
 def process_show_title(message):
-    print("Вход в функцию process_show_title")
     print(f"Название спектакля: {message.text}")
     commands.show_info(bot, message, show_title=message.text)
-
-
-
-
-
-@bot.message_handler(func=lambda message: True)
-def handle_all_messages(message):
-    # Проверяем, содержит ли сообщение '/'
-    if '/' not in message.text:
-        print("Обработка всех сообщений")
-        searcher.search(bot, message)
-
-
 
 if __name__ == '__main__':
     try:
