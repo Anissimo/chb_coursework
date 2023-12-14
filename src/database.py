@@ -14,6 +14,14 @@ def get_theaters():
     result = theaters.find()
     return result
 
+def get_theater_by_name(theater_name):
+    print("Получение театра с указанным названием из базы данных")
+    result = theaters.find_one({"theaterName": theater_name})
+    if result is not None:
+        print(f"Театр {result['theaterName']} найден"   )
+    else:
+        print("Театр не найден")
+    return result
 
 
 def get_theater(id):

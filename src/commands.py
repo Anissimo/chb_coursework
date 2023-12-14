@@ -1,54 +1,61 @@
 # commands.py
-
 import database
 from datetime import datetime
 from geopy.geocoders import Nominatim
+from telebot import types
 
 def start(bot, message):
     "Отправляет приветственное сообщение и краткое описание функционала бота."
     bot.send_message(message.chat.id, 'Привет!')
 
-def help(bot, message):
-    "Показывает список всех доступных команд."
-    bot.send_message(message.chat.id, 'Вот список всех доступных команд:\n\n/start - Приветственное сообщение и краткое описание функционала бота.\n/help - Показывает список всех доступных команд.\n/short - Показывает краткую информацию о каждом театре.\n/id(театра)/full - Показывает полную информацию о театре с указанным ID.\n/id(театра)/full/show_title - Показывает информацию о конкретном спектакле в указанном театре.\n/nearest_show/all - Показывает ближайшие спектакли всех театров.\n/id(театра)/nearest_show - Показывает ближайшие спектакли конкретного театра.\n/show_title/nearest_show - Показывает ближайшие спектакли с указанным названием.\n/id(театра)/location - Показывает местоположение театра с указанным ID на Яндекс Картах.\n/search - Выполняет умный поиск на основе запроса пользователя и вызывает наиболее подходящую функцию.')
-
-
 def short(bot, message):
     "Отправляет краткую информацию о каждом театре."
     theaters = database.get_theaters()
     for theater in theaters:
-        bot.send_message(message.chat.id, f'ID: {str(theater["_id"])}\nНазвание театра: {theater["theaterName"]}\nСайт: {theater["website"]}\nМестоположение: {theater["location"]}\nКоличество спектаклей: {len(theater["shows"])}')
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton(text="Сайт", url=theater["website"]))
+        location_url = theatre_location(bot, message, str(theater["_id"]), send_message=False)
+        markup.add(types.InlineKeyboardButton(text="Адрес", url=location_url))
+        bot.send_photo(chat_id=message.chat.id, photo=theater["theaterImages"][0], caption=f'ID: {str(theater["_id"])}\nНазвание театра: {theater["theaterName"]}\nСайт: {theater["website"]}\nМестоположение: {theater["location"]}\nКоличество спектаклей: {len(theater["shows"])}', reply_markup=markup)
 
-def full(bot, message, id):
-    # /full/65780c052c563c97e5e7b1a1
+
+def full(bot, message, theater_name):
     print("Вход в функцию full")
-    theater = database.get_theater(id)
+    theater = database.get_theater_by_name(theater_name)
     if theater is not None:
         print(f"Обработка театра {theater['theaterName']}")
-        bot.send_message(message.chat.id, f'ID: {str(theater["_id"])}\nНазвание театра: {theater["theaterName"]}\nСайт: {theater["website"]}\nМестоположение: {theater["location"]}')
-        for image_url in theater["theaterImages"]:
-            bot.send_photo(chat_id=message.chat.id, photo=image_url)
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton(text="Сайт", url=theater["website"]))
+        location_url = theatre_location(bot, message, theater["_id"], send_message=False)
+        markup.add(types.InlineKeyboardButton(text="Адрес", url=location_url))
         for show in theater["shows"]:
-            show_info(bot, message, id, show["title"], send_images=True)
+            markup.add(types.InlineKeyboardButton(text=show["title"], callback_data=f'show_info:{theater["_id"]}:{show["title"]}'))
+        bot.send_photo(chat_id=message.chat.id, photo=theater["theaterImages"][0], caption=f'ID: {str(theater["_id"])}\n{theater["theaterName"]}\nАдрес: {theater["location"]}', reply_markup=markup)
     else:
-        bot.send_message(message.chat.id, 'Театр с таким ID не найден.')
+        bot.send_message(message.chat.id, 'Театр с таким названием не найден.')
 
-def show_info(bot, message, id, show_title, send_images=False):
-    # /full/65780c052c563c97e5e7b1a1/Ревизор
+
+def show_info(bot, message, id=None, show_title=None, send_images=False):
     print("Вход в функцию show_info")
-    theater = database.get_theater(id)
-    if theater is not None:
+    theaters = database.get_theaters()
+    for theater in theaters:
         for show in theater["shows"]:
             if show["title"] == show_title:
                 print(f"Обработка шоу {show['title']}")
-                bot.send_message(message.chat.id, f'Название спектакля: {show["title"]}\nКраткое описание: {show["shortDescription"]}')
-                if send_images:
-                    for image_url in show["images"]:
-                        bot.send_photo(chat_id=message.chat.id, photo=image_url)
-                for upcoming_show in show["upcomingShows"]:
-                    bot.send_message(message.chat.id, f'Дата: {upcoming_show["date"]}\nЦена билета: {upcoming_show["ticketPrice"]}\nСсылка на бронирование: {upcoming_show["bookingLink"]}')
-    else:
-        bot.send_message(message.chat.id, 'Театр с таким ID не найден.')
+                markup = types.InlineKeyboardMarkup()
+                upcoming_shows = [s for s in show["upcomingShows"] if datetime.fromisoformat(s["date"]) > datetime.now()]
+                if upcoming_shows:
+                    # Проверяем, является ли дата строкой
+                    if isinstance(upcoming_shows[0]["date"], str):
+                        show_date = upcoming_shows[0]["date"]
+                    else:
+                        show_date = upcoming_shows[0]["date"].strftime("%d.%m.%Y %H:%M")
+                    markup.add(types.InlineKeyboardButton(text="Бронировать билеты", url=upcoming_shows[0]["bookingLink"]))
+                    bot.send_photo(chat_id=message.chat.id, photo=show["images"][0], caption=f'Название спектакля: {show["title"]}\nБлижайший спектакль: {show_date}\nЦена билета: {upcoming_shows[0]["ticketPrice"]}', reply_markup=markup)
+                return
+    bot.send_message(message.chat.id, 'Спектакль с таким названием не найден.')
+
+
 
 def nearest_show(bot, message, id=None, title=None):
     print("Вход в функцию nearest_show")
@@ -66,13 +73,14 @@ def nearest_show(bot, message, id=None, title=None):
                     continue
                 upcoming_shows = [s for s in show["upcomingShows"] if datetime.fromisoformat(s["date"]) > datetime.now()]
                 if upcoming_shows:
-                    bot.send_message(message.chat.id, f'Название спектакля: {show["title"]}\nБлижайший спектакль: {upcoming_shows[0]["date"]}\nЦена билета: {upcoming_shows[0]["ticketPrice"]}\nСсылка на бронирование: {upcoming_shows[0]["bookingLink"]}')
+                    # Обновляем дату ближайшего спектакля в информации о спектакле
+                    show["upcomingShows"][0]["date"] = upcoming_shows[0]["date"]
+                    show_info(bot, message, str(theater["_id"]), show["title"], send_images=False)
         else:
             bot.send_message(message.chat.id, 'Театр с таким ID не найден.')
 
-from geopy.geocoders import Nominatim
 
-def theatre_location(bot, message, id):
+def theatre_location(bot, message, id, send_message=True):
     print("Вход в функцию theatre_location")
     theater = database.get_theater(id)
     if theater is not None:
@@ -80,10 +88,13 @@ def theatre_location(bot, message, id):
         geolocator = Nominatim(user_agent="theatre_bot")
         location = geolocator.geocode(theater["location"])
         yandex_maps_link = f'https://yandex.com/maps/?ll={location.longitude},{location.latitude}&z=14'
-        bot.send_message(message.chat.id, f'Местоположение театра {theater["theaterName"]}\nЯндекс Карты\n{yandex_maps_link}')
+        if send_message:
+            bot.send_message(message.chat.id, f'Как добраться? \n{theater["theaterName"]}\nЯндекс Карты\n{yandex_maps_link}')
+        return yandex_maps_link
     else:
-        bot.send_message(message.chat.id, 'Театр с таким ID не найден.')
-
+        if send_message:
+            bot.send_message(message.chat.id, 'Театр с таким ID не найден.')
+        return None
 
 def feedback(bot, message):
     "Позволяет пользователю оставить отзыв или предложение."

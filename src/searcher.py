@@ -16,28 +16,30 @@ vectorizer = TfidfVectorizer()
 vectorized_phrases = vectorizer.fit_transform([' '.join(phrases) for phrases in user_phrases.values()])
 
 def search(bot, message):
-    print("Обработка сообщения пользователя")
-    # Векторизуем запрос пользователя
-    user_query = vectorizer.transform([message.text])
-    
-    # Вычисляем косинусное сходство между запросом пользователя и типовыми фразами
-    similarities = cosine_similarity(user_query, vectorized_phrases).flatten()
-    print(f"Косинусное сходство: {similarities}")
-    
-    # Находим индекс фразы с наибольшим сходством
-    best_match_index = similarities.argmax()
-    print(f"Лучший индекс совпадения: {best_match_index}")
-    
-    # Вызываем соответствующую функцию
-    if best_match_index == 0:
-        print("Вызов функции commands.short")
-        commands.short(bot, message)
-    elif best_match_index == 1:
-        print("Вызов функции commands.full")
-        commands.full(bot, message)
-    elif best_match_index == 2:
-        print("Вызов функции commands.nearest_show")
-        commands.nearest_show(bot, message)
-    elif best_match_index == 3:
-        print("Вызов функции commands.theatre_location")
-        commands.theatre_location(bot, message)
+    try:
+        # Векторизуем запрос пользователя
+        user_query = vectorizer.transform([message.text])
+        
+        # Вычисляем косинусное сходство между запросом пользователя и типовыми фразами
+        similarities = cosine_similarity(user_query, vectorized_phrases).flatten()
+        
+        # Находим индекс фразы с наибольшим сходством
+        best_match_index = similarities.argmax()
+        
+        # Вызываем соответствующую функцию
+        if best_match_index == 0:
+            commands.short(bot, message)
+        elif best_match_index == 1:
+            # Ищем в базе данных театр, который упоминается в запросе пользователя
+            theater_name = database.find_theater_in_text(message.text)
+            if theater_name:
+                commands.full(bot, message, theater_name)
+            else:
+                bot.send_message(message.chat.id, "Попробуйте найти ещё")
+        elif best_match_index == 2:
+            commands.nearest_show(bot, message)
+        elif best_match_index == 3:
+            commands.theatre_location(bot, message)
+    except Exception as e:
+        print(f"Ошибка: {e}")
+        bot.send_message(message.chat.id, "Попробуйте найти ещё")
