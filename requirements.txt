@@ -4,4 +4,8 @@ telegram
 datetime
 geopy
 Nominatim
-sklearn 
+scikit-learn
+bson
+pymongo
+telebot
+geopy
