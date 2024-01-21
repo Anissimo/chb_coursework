@@ -1,0 +1,8 @@
+- bot/
+  - __init__.py
+  - main.py
+  - config.py
+  - keyboard.py
+  - commands.py
+  - database.py
+- README.md

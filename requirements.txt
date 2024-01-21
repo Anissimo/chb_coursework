@@ -1,0 +1,7 @@
+pyTelegramBotAPI
+pymongo
+telegram
+datetime
+geopy
+Nominatim
+sklearn 
