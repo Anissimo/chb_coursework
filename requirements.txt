@@ -5,7 +5,6 @@ datetime
 geopy
 Nominatim
 scikit-learn
-bson
 pymongo
 telebot
 geopy
