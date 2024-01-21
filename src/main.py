@@ -21,8 +21,8 @@ def help(message):
     markup.add(types.InlineKeyboardButton(text="Полная информация о театре", callback_data='full'))
     markup.add(types.InlineKeyboardButton(text="Информация о конкретном спектакле", callback_data='show_info'))
     markup.add(types.InlineKeyboardButton(text="Ближайшие спектакли всех театров", callback_data='nearest_show_all'))
-    markup.add(types.InlineKeyboardButton(text="Ближайшие спектакли конкретного театра", callback_data='nearest_show_id'))
-    markup.add(types.InlineKeyboardButton(text="Ближайшие спектакли с указанным названием", callback_data='nearest_show_title'))
+    # markup.add(types.InlineKeyboardButton(text="Ближайшие спектакли конкретного театра", callback_data='nearest_show_id'))
+    # markup.add(types.InlineKeyboardButton(text="Ближайшие спектакли с указанным названием", callback_data='nearest_show_title'))
     markup.add(types.InlineKeyboardButton(text="Поиск", callback_data='search'))
     bot.send_message(message.chat.id, "Вот список всех доступных команд:", reply_markup=markup)
 
