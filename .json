@@ -1,0 +1,63 @@
+{
+    "shops": [
+      {
+        "name": "DNS",
+        "website": "www.dns-shop.ru",
+        "description": "DNS - это сеть магазинов цифровой и бытовой техники.",
+        "locations": [
+          {
+            "city": "Самара",
+            "address": "ул. Ленина, 1",
+            "working_hours": "10:00 - 22:00",
+            "name": "DNS Самара 1"
+          },
+          {
+            "city": "Самара",
+            "address": "ул. Молодогвардейская, 33",
+            "working_hours": "10:00 - 22:00",
+            "name": "DNS Самара 2"
+          }
+        ],
+        "products": [
+          {
+            "name": "Процессор Intel Core i7",
+            "image_url": "https://avatars.mds.yandex.net/get-mpic/10683269/2a0000018a377983ff595bb519c3ca521d4a/600x800"
+          },
+          {
+            "name": "Видеокарта NVIDIA GeForce RTX 3080",
+            "image_url": "https://cdn.citilink.ru/nYv9nSCMsnARi6S97mglxirS3VyfAC2P1GoBzIXmYwM/resizing_type:fit/gravity:sm/width:400/height:400/plain/product-images/1eef2c3b-69a2-4973-abac-100d3d255b80.jpg"
+          }
+        ]
+      },
+      {
+        "name": "Ситилинк",
+        "website": "www.citilink.ru",
+        "description": "Ситилинк - один из крупнейших ритейлеров цифровой и бытовой техники в России.",
+        "locations": [
+          {
+            "city": "Москва",
+            "address": "ул. Тверская, 1",
+            "working_hours": "10:00 - 22:00",
+            "name": "Ситилинк Москва 1"
+          },
+          {
+            "city": "Москва",
+            "address": "ул. Новый Арбат, 15",
+            "working_hours": "10:00 - 22:00",
+            "name": "Ситилинк Москва 2"
+          }
+        ],
+        "products": [
+          {
+            "name": "Процессор AMD Ryzen 7",
+            "image_url": "https://avatars.mds.yandex.net/get-mpic/4420180/img_id6320723875267943582.jpeg/600x800"
+          },
+          {
+            "name": "Видеокарта AMD Radeon RX 6800",
+            "image_url": "https://avatars.mds.yandex.net/get-mpic/4249638/img_id1493987954575385253.jpeg/600x800"
+          }
+        ]
+      }
+    ]
+  }
+  
