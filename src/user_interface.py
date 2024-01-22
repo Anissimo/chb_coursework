@@ -8,9 +8,21 @@ def set_bot(b):
     global bot
     bot = b
 
-def ask_for_shop(message):
-    msg = bot.send_message(message.chat.id, "Пожалуйста, введите название магазина.")
-    bot.register_next_step_handler(msg, process_shop_step)
+def ask_for_shop_info(message):
+    msg = bot.send_message(message.chat.id, "Пожалуйста, введите название магазина, чтобы получить информацию о нем.")
+    bot.register_next_step_handler(msg, process_shop_info_step)
+
+def process_shop_info_step(message):
+    shop_name = message.text
+    send_shop_info(message, shop_name)
+
+def ask_for_shop_products(message):
+    msg = bot.send_message(message.chat.id, "Пожалуйста, введите название магазина, чтобы увидеть его товары.")
+    bot.register_next_step_handler(msg, process_shop_products_step)
+
+def process_shop_products_step(message):
+    shop_name = message.text
+    send_products_in_shop(message, shop_name)
 
 def process_shop_step(message):
     shop_name = message.text
@@ -58,3 +70,5 @@ def send_shops_by_brand(bot, message, brand_name):
         bot.send_message(message.chat.id, info, parse_mode='Markdown')
     else:
         bot.reply_to(message, "Извините, я не могу найти магазины этого бренда.")
+
+

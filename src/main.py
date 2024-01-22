@@ -2,10 +2,19 @@
 import telebot
 from telebot import types
 
-import config, command_handler, database_handler, nlp_handler, user_interface
+import config, command_handler, user_interface
+from nlp_handler import AI
+
+
 
 bot = telebot.TeleBot(config.BOT_TOKEN)
 user_interface.set_bot(bot)  # Добавьте эту строку
+
+from nlp_handler import AI
+
+# Создание экземпляра класса AI
+ai = AI()
+
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -25,13 +34,21 @@ def help(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_query(call):
-    if call.data == 'shop_info':
-        user_interface.ask_for_shop(call.message)
-    elif call.data == 'all_shops':
-        user_interface.send_all_shops(bot, call.message)
-    elif call.data == 'shop_products':
-        user_interface.ask_for_shop(call.message)
-    elif call.data == 'brand_shops':
-        user_interface.ask_for_shop(call.message)
+    if call.data == 'search':
+        # Получение текстового сообщения от пользователя
+        message_text = call.message.text
 
+        # Использование AI для предсказания действия
+        action = ai.predict_action(message_text)
+
+        # Выполнение действия в соответствии с предсказанием
+        if action == 'shop_info':
+            user_interface.ask_for_shop_info(call.message)
+        elif action == 'all_shops':
+            user_interface.send_all_shops(bot, call.message)
+        elif action == 'shop_products':
+            user_interface.ask_for_shop_products(call.message)
+        elif action == 'brand_shops':
+            user_interface.ask_for_shop_info(call.message)  # если для брендовых магазинов также требуется информация о магазине
+            
 bot.polling()
